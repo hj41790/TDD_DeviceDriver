@@ -1,4 +1,6 @@
 #pragma once
+#include <exception>
+
 #include "FlashMemoryDevice.h"
 
 #include <exception>
@@ -18,6 +20,15 @@ class ReadFailException : public std::exception
 {
 public:
 	explicit ReadFailException(char const* _Message)
+		: exception(_Message)
+	{
+	}
+};
+
+class WriteFailException : public std::exception
+{
+public:
+	explicit WriteFailException(char const* _Message)
 		: exception(_Message)
 	{
 	}

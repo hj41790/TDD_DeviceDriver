@@ -34,3 +34,28 @@ TEST(DeviceDrvierTest, ReadFailTest) {
 
 	EXPECT_THROW(driver.read(0xdeadbeaf), ReadFailException);
 }
+
+TEST(DeviceDrvierTest, WriteSucceedTest) {
+	MockFlashMemory flashmemory;
+	DeviceDriver driver(&flashmemory);
+
+	EXPECT_CALL(flashmemory, read)
+		.Times(1)
+		.WillRepeatedly(Return('A'));
+
+	EXPECT_CALL(flashmemory, write)
+		.Times(1);
+
+	EXPECT_NO_THROW(driver.write(0xdeadbeaf, 'A'));
+}
+
+TEST(DeviceDrvierTest, WriteFailTest) {
+	MockFlashMemory flashmemory;
+	DeviceDriver driver(&flashmemory);
+
+	EXPECT_CALL(flashmemory, read)
+		.Times(1)
+		.WillRepeatedly(Return(0xFF));
+
+	EXPECT_THROW(driver.write(0xdeadbeaf, 'A'), WriteFailException);
+}
