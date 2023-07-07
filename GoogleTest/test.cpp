@@ -40,7 +40,6 @@ TEST(DeviceDrvierTest, WriteSucceedTest) {
 	DeviceDriver driver(&flashmemory);
 
 	EXPECT_CALL(flashmemory, read)
-		.Times(1)
 		.WillRepeatedly(Return('A'));
 
 	EXPECT_CALL(flashmemory, write)
@@ -54,7 +53,6 @@ TEST(DeviceDrvierTest, WriteFailTest) {
 	DeviceDriver driver(&flashmemory);
 
 	EXPECT_CALL(flashmemory, read)
-		.Times(1)
 		.WillRepeatedly(Return(0xFF));
 
 	EXPECT_THROW(driver.write(0xdeadbeaf, 'A'), WriteFailException);
