@@ -3,6 +3,8 @@
 
 #include "FlashMemoryDevice.h"
 
+#include <exception>
+
 class DeviceDriver
 {
 public:
@@ -12,6 +14,15 @@ public:
 
 protected:
 	FlashMemoryDevice *m_hardware;
+};
+
+class ReadFailException : public std::exception
+{
+public:
+	explicit ReadFailException(char const* _Message)
+		: exception(_Message)
+	{
+	}
 };
 
 class WriteFailException : public std::exception

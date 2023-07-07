@@ -12,6 +12,29 @@ public:
 	MOCK_METHOD(void, write, (long address, unsigned char data), (override));
 };
 
+TEST(DeviceDrvierTest, ReadSucceedTest) {
+	MockFlashMemory flashmemory;
+	DeviceDriver driver(&flashmemory);
+
+	EXPECT_CALL(flashmemory, read)
+		.Times(5)
+		.WillRepeatedly(Return('A'));
+
+	EXPECT_EQ('A', driver.read(0xdeadbeaf));
+}
+
+TEST(DeviceDrvierTest, ReadFailTest) {
+	MockFlashMemory flashmemory;
+	DeviceDriver driver(&flashmemory);
+
+	EXPECT_CALL(flashmemory, read)
+		.WillOnce(Return('A'))
+		.WillOnce(Return('A'))
+		.WillRepeatedly(Return('B'));
+
+	EXPECT_THROW(driver.read(0xdeadbeaf), ReadFailException);
+}
+
 TEST(DeviceDrvierTest, WriteSucceedTest) {
 	MockFlashMemory flashmemory;
 	DeviceDriver driver(&flashmemory);
@@ -35,5 +58,4 @@ TEST(DeviceDrvierTest, WriteFailTest) {
 		.WillRepeatedly(Return(0xFF));
 
 	EXPECT_THROW(driver.write(0xdeadbeaf, 'A'), WriteFailException);
-
 }
