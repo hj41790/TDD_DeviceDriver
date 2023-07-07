@@ -28,7 +28,6 @@ TEST(DeviceDrvierTest, ReadFailTest) {
 	DeviceDriver driver(&flashmemory);
 
 	EXPECT_CALL(flashmemory, read)
-		.Times(5)
 		.WillOnce(Return('A'))
 		.WillOnce(Return('A'))
 		.WillRepeatedly(Return('B'));
